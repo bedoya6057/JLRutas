@@ -9,9 +9,9 @@ import os
 import math
 import json
 
-st.set_page_config(page_title="Gestión de Rutas - JLRutas", layout="wide", page_icon="🚛")
+st.set_page_config(page_title="Gestión de Rutas - JLMarketing", layout="wide", page_icon="🚛")
 
-# --- CUSTOM CSS (SODEXO BRANDING) ---
+# --- CUSTOM CSS (JLMARKETING BRANDING) ---
 st.markdown("""
     <style>
     /* Main Background */
@@ -19,13 +19,13 @@ st.markdown("""
         background-color: #F4F6F8;
     }
     
-    /* Headers - Sodexo Navy */
+    /* Headers - JLMarketing Navy */
     h1, h2, h3, h4, h5, h6 {
         color: #262262 !important;
         font-family: 'Segoe UI', sans-serif;
     }
     
-    /* Buttons - Sodexo Red */
+    /* Buttons - JLMarketing Red */
     .stButton button {
         background-color: #EF4044 !important;
         color: white !important;
@@ -208,7 +208,7 @@ def load_master_db(path):
         return None
 
 def style_dataframe(df):
-    """Applies Sodexo branding to DataFrames"""
+    """Applies JLMarketing branding to DataFrames"""
     return df.style.set_properties(**{
         'background-color': '#E0E4E8',
         'color': '#262262',
@@ -344,7 +344,7 @@ def render_route_details(vehicle_route, vid, v_type, is_admin=False, route_city=
             
             if total_points <= 10:
                 wps = "|".join(full_path_coords[1:-1])
-                tm = "walking" if v_type == "Walker" else "driving"
+                tm = "driving" if v_type == "Auto" else "walking"
                 maps_url = f"https://www.google.com/maps/dir/?api=1&origin={full_path_coords[0]}&destination={full_path_coords[-1]}&waypoints={wps}&travelmode={tm}"
                 st.link_button("🗺️ Ver Ruta Completa", maps_url)
             else:
@@ -363,7 +363,7 @@ def render_route_details(vehicle_route, vid, v_type, is_admin=False, route_city=
                     s_dest = segment[-1]
                     s_waypoints = "|".join(segment[1:-1])
                     
-                    tm = "walking" if v_type == "Walker" else "driving"
+                    tm = "driving" if v_type == "Auto" else "walking"
                     maps_url = f"https://www.google.com/maps/dir/?api=1&origin={s_origin}&destination={s_dest}&waypoints={s_waypoints}&travelmode={tm}"
                     
                     label = f"Tramo {button_idx+1} (Pts {i+1}-{end_idx})"
@@ -441,6 +441,9 @@ if not st.session_state.logged_in:
 
 # --- LOGOUT & USER INFO ---
 with st.sidebar:
+    if os.path.exists("logo.png"):
+        st.image("logo.png", use_container_width=True)
+    
     st.write(f"👤 **{st.session_state.username}**")
     st.caption(f"Rol: {st.session_state.role.upper()}")
     if st.button("Cerrar Sesión"):
@@ -499,7 +502,7 @@ else:
 
 # 2. Title (Centered and Below Logo)
 st.markdown("<h1 style='text-align: center; color: #262262; padding-top: 10px;'>JLRutas - Planificador</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #5D5D5D; font-weight: bold;'>Gestión Inteligente de Flota y Entregas - Sodexo Perú</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #5D5D5D; font-weight: bold;'>Gestión Inteligente de Flota y Entregas - JLMarketing Perú</p>", unsafe_allow_html=True)
 
 if st.button("🔄 Reiniciar Aplicación"):
     reset_app()
@@ -762,7 +765,7 @@ if st.session_state.stage == 'input_tickets':
 
 # --- STAGE 2: CONFIGURACION DE FLOTA ---
 elif st.session_state.stage == 'fleet_config':
-    st.header("2️⃣ Disponibilidad de Vehículos por Ciudad")
+    st.header("2️⃣ Disponibilidad de Vehículos por Departamento")
     
     col_config, col_summary = st.columns(2)
     
@@ -972,7 +975,7 @@ elif st.session_state.stage == 'fleet_config':
                                 'Nombre': f'DEPOT {city} (Plaza de Armas)', 
                                 'Latitud (y)': depot_lat, 
                                 'Longitud (x)': depot_lon, 
-                                'Habla a': 'SODEXO',
+                                'Habla a': 'JLMarketing',
                                 'Importe de la entrega': 0,
                                 'Ticket': 'Inicio',
                                 'Familia': 'Base',
@@ -1027,10 +1030,10 @@ elif st.session_state.stage == 'fleet_config':
                             depot_lon = dist_tickets['Longitud (x)'].mean()
 
                             depot_row = pd.DataFrame([{
-                                'Nombre': f'DEPOT {city}-{selected_district} (Ref. Centro)', 
+                                'Nombre': f'DEPOT {city}-{selected_district} (Calculado: Promedio de Tickets)', 
                                 'Latitud (y)': depot_lat, 
                                 'Longitud (x)': depot_lon, 
-                                'Habla a': 'SODEXO',
+                                'Habla a': 'JLMarketing',
                                 'Importe de la entrega': 0,
                                 'Ticket': 'Inicio',
                                 'Familia': 'Base',

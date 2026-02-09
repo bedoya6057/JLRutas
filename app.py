@@ -162,7 +162,7 @@ def load_master_db(path):
         return None
     try:
         # Try reading directly
-        df = pd.read_excel(path, sheet_name='Hoja1') # Updated sheet name
+        df = pd.read_excel(path, sheet_name='Hoja2') # Updated to Hoja2 as per user request
         df.columns = df.columns.str.strip()
         
         # COLUMN MAPPING (New DB -> App Schema)
@@ -184,7 +184,7 @@ def load_master_db(path):
         try:
             temp_path = "temp_master_copy.xlsm" # Consider renaming to .xlsx if source is xlsx
             shutil.copy2(path, temp_path)
-            df = pd.read_excel(temp_path, sheet_name='Hoja1')
+            df = pd.read_excel(temp_path, sheet_name='Hoja2')
             df.columns = df.columns.str.strip()
             
             # COLUMN MAPPING (New DB -> App Schema)

@@ -1,0 +1,15 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Excel Temp
+~$*.xlsx
+~$*.xlsm
+temp_master_copy.xlsm
+temp_debug_master.xlsx
+
+# Environment
+.env
+venv/
